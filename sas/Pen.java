@@ -10,7 +10,6 @@ import sas.Shapes;
 
 public class Pen extends Shapes {
 	private List<Line2D.Double> lines;
-	private double direction = 0.0;
 	private boolean up = true;
 
 	public Pen() {
@@ -40,23 +39,26 @@ public class Pen extends Shapes {
 	}
 
 	public void turnTo(double pAngle) {
-		this.direction -= pAngle;
-		while (this.direction < 0.0) {
-			this.direction += 360.0;
+		double dir = pAngle;
+		while (dir < 0.0) {
+			dir += 360.0;
 		}
-		while (this.direction >= 720.0) {
-			this.direction -= 360.0;
+		while (dir >= 720.0) {
+			dir -= 360.0;
 		}
+		this.setDirection(dir);
 	}
 
 	public void turnBy(double pAngle) {
-		this.direction += pAngle;
-		while (this.direction < 0.0) {
-			this.direction += 360.0;
+		double dir = this.getDirection();
+		dir += pAngle;
+		while (dir < 0.0) {
+			dir += 360.0;
 		}
-		while (this.direction >= 720.0) {
-			this.direction -= 360.0;
+		while (dir >= 720.0) {
+			dir -= 360.0;
 		}
+		this.setDirection(dir);
 	}
 
 	public void moveTo(double pX, double pY) {
@@ -67,7 +69,7 @@ public class Pen extends Shapes {
 	}
 
 	public void moveFor(double pDistance) {
-		double w = this.direction * Math.PI / 180.0;
+		double w = this.getDirection() * Math.PI / 180.0;
 		double x = this.getXPosition() + pDistance * Math.cos(w);
 		double y = this.getYPosition() - pDistance * Math.sin(w);
 
